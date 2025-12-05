@@ -6,6 +6,7 @@ const uiSlice = createSlice({
     darkMode: false,
     modalOpen: false,
     selectedContact: null,
+    searchTerm: ""  // <-- add this
   },
   reducers: {
     toggleTheme(state) {
@@ -18,9 +19,12 @@ const uiSlice = createSlice({
     closeModal(state) {
       state.modalOpen = false;
       state.selectedContact = null;
+    },
+    setSearchTerm(state, action) {  // <-- add this reducer
+      state.searchTerm = action.payload;
     }
   }
 });
 
-export const { toggleTheme, openModal, closeModal } = uiSlice.actions;
+export const { toggleTheme, openModal, closeModal, setSearchTerm } = uiSlice.actions;
 export default uiSlice.reducer;

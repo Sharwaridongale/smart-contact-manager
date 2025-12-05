@@ -6,15 +6,21 @@ import { openModal } from "../store/uiSlice";
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.list);
-  const search = useSelector((state) => state.ui.search || "");
 
-  const filtered = contacts.filter((c) =>
-    c.name.toLowerCase().includes(search.toLowerCase())
+  // Get contacts from Redux store
+  const contacts = useSelector((state) => state.contacts.list || []);
+
+  // Get search term from uiSlice
+  const searchTerm = useSelector((state) => state.ui.searchTerm || "");
+
+  // Filter contacts by search term (case-insensitive)
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="contact-list">
+      {/* Header */}
       <div className="list-header">
         <h2>Contacts</h2>
         <button onClick={() => dispatch(openModal(null))} className="btn">
@@ -22,12 +28,15 @@ const ContactList = () => {
         </button>
       </div>
 
+      {/* Search Bar */}
       <SearchBar />
 
-      {filtered.length === 0 && <p>No contacts found.</p>}
+      {/* No contacts message */}
+      {filteredContacts.length === 0 && <p>No contacts found.</p>}
 
-      {filtered.map((c) => (
-        <ContactItem key={c.id} contact={c} />
+      {/* Contact Items */}
+      {filteredContacts.map((contact) => (
+        <ContactItem key={contact.id} contact={contact} />
       ))}
     </div>
   );
